@@ -1,13 +1,422 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  font-family: 'Young Serif', serif !important;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.App {
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  display: none !important;
+}
+
+.trending_scroll {
+  display: flex;
+  overflow: auto;
+}
+
+.type_name {
+  text-transform: capitalize;
+}
+
+.single_game_tile_poster {
+  object-fit: cover;
+  height: 200px;
+  width: 350px;
+  border-radius: 10px 10px 0 0;
+}
+
+.single_game_tile {
+  background-color: rgb(43, 43, 43);
+  border-radius: 10px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+.single_game_tile:hover {
+  transform: scale(98%);
+  transition: all .5s;
+}
+
+.single_game_tile_title {
+  font-size: 20px;
+  color: white;
+  margin: 5px 2px;
+}
+
+.single_game_tile_content_bottom {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.platform_icon_small {
+  height: 25px;
+  width: auto;
+  margin: 5px;
+}
+
+.platform_icon_large {
+  height: 35px;
+  width: auto;
+  margin: 5px;
+}
+
+.single_game_tile_content {
+  padding: 10px;
+}
+
+.single_game_scroll_platforms {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.rating {
+  border-color: red;
+  padding: 5px;
+  border-style: solid;
+  border-width: 1px;
+  color: red;
+  width: fit-content;
+  font-size: small;
+  border-radius: 4px;
+}
+
+.trending_title {
+  font-weight: 700;
+  margin: 0px 10px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.welcome_backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 60vh;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  color: white;
+  border-radius: 10px;
+}
+
+.welcomeText {
+  font-size: 40px;
+}
+
+.welcomeDesc {
+  font-size: 20px;
+}
+
+.welcome {
+  cursor: pointer;
+}
+
+.readmore {
+  font-size: 12px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.screenshot {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.screenshots {
+  width: 80%;
+  margin: auto;
+}
+
+.released {
+  background-color: white;
+  color: black;
+  padding: 4px;
+  width: fit-content;
+  border-radius: 4px;
+}
+
+.single_platform {
+  border-radius: 10px;
+  margin: 10px;
+  background-size: cover;
+  color: white;
+  min-width: 200px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.input_search {
+  font-size: 24px !important;
+  padding: 10px;
+}
+
+.single_platform_content {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 20px;
+}
+
+.platforms {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.navbar__img {
+  height: 35px;
+  width: 35px;
+  object-fit: cover;
+  margin-left: 10px;
+  border-radius: 50%;
+  border-color: transparent;
+  border-width: 1.2px;
+  padding: 1.2px;
+  border-style: solid;
+}
+
+.navbar_icon {
+  height: 35px;
+  width: 35px;
+}
+
+.navbar__img_active {
+  height: 35px;
+  width: 35px;
+  object-fit: cover;
+  margin-left: 10px;
+  border-radius: 50%;
+  border-width: 1.2px;
+  padding: 1.2px;
+  border-style: solid;
+}
+
+.navlink {
+  transition: transform .2s;
+}
+
+.navlink:hover {
+  transform: scale(0.9);
+}
+
+.discover_movies_title {
+  font-weight: bold;
+  margin: 0px 10px;
+  font-size: 40px;
+  color: white;
+}
+
+.singlecontentposter {
+  height: 500px;
+  width: 300px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.backdrop_opacity {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+}
+
+.singlecontent_responsive {
+  display: flex;
+  padding: 25px;
+  color: white;
+}
+
+.details {
+  padding: 20px;
+}
+
+.overview {
+  margin: 10px 0px;
+}
+
+.actions {
+  margin: 20px 0px;
+  display: flex;
+}
+
+.mobile {
+  display: none;
+}
+
+.pc {
+  display: block;
+}
+
+.watchprovider {
+  margin-left: 20px;
+}
+
+.genrelist {
+  border-width: 1px;
+  border-style: solid;
+  padding: 3px;
+  margin: 2px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.single_review {
+  margin: 10px;
+}
+
+.share_user {
+  display: flex;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.share_user_image {
+  height: 35px;
+  width: 35px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.share_user_username {
+  opacity: 0.8;
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.share_user_username:hover {
+  opacity: 1;
+}
+
+.addreview {
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+}
+
+.addreview:hover {
+  opacity: 1;
+}
+
+.reviews {
+  padding-bottom: 100px;
+}
+
+.loading {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 100px;
+  align-items: center;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .input_search {
+    font-size: 18px !important;
+    padding: 5px;
+  }
+
+  .single_platform {
+    margin: 5px;
+    min-width: 100px;
+    font-size: 16px;
+  }
+
+  .single_game_tile_poster {
+    height: 150px;
+    width: 300px;
+  }
+
+  .platform_icon_small {
+    height: 18px;
+    width: auto;
+    margin: 2px;
+  }
+
+  .single_game_tile_title {
+    font-size: 18px;
+  }
+
+  .welcome {
+    height: 30vh;
+  }
+
+  .welcome_backdrop {
+    height: 30vh;
+  }
+
+  .welcomeText {
+    font-size: 25px;
+  }
+
+  .welcomeDesc {
+    font-size: 15px;
+  }
+
+  .navbar_icon {
+    height: 30px;
+    width: 30px;
+  }
+
+  .navbar__img {
+    height: 30px;
+    width: 30px;
+  }
+
+  .navbar__img_active {
+    height: 30px;
+    width: 30px;
+  }
+
+  .discover_movies_title {
+    font-size: 30px;
+  }
+}
+
+@media only screen and (max-width: 880px) {
+  .singlecontent_responsive {
+    display: grid;
+    padding: 0;
+  }
+
+  .actions {
+    display: grid;
+  }
+
+  .watchprovider {
+    margin-top: 20px;
+    margin-left: 0;
+  }
+
+  .singlecontentposter_responsive {
+    display: grid;
+    place-items: center;
+  }
+
+  .details {
+    padding: 20px 10px;
+  }
+
+  .pc {
+    display: none;
+  }
+
+  .mobile {
+    display: block;
+  }
+
+  .trailer {
+    height: 30vh;
+  }
+
+  .tagline {
+    color: unset;
+  }
 }
