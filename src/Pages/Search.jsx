@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import '../index.css'
-import Grid from '@mui/material/Unstable_Grid2';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import empty from '../Assets/empty.png'
@@ -19,7 +18,7 @@ export default function Search() {
     }
 
     useEffect(() => {
-        window.scroll(0, 0)
+        window.scrollTo(0, 0)
         fetchSearch();
     }, [query])
 
@@ -31,7 +30,6 @@ export default function Search() {
                     sx={{ ml: 1, flex: 1 }}
                     className='input_search'
                     placeholder="Search games"
-                    inputProps={{ 'aria-label': 'search google maps' }}
                     value={query}
                     autoFocus
                     onChange={(e) => setQuery(e.target.value)}
@@ -43,7 +41,7 @@ export default function Search() {
                 />
             </Paper>
             <br />
-            <div className='trending_scroll'>
+            <div className='trending_scroll_responsive'>
                 {content && content.map((data) => {
                     return <SingleGameTile data={data} key={data.id} />
                 })}

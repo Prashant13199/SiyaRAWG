@@ -25,7 +25,7 @@ export default function Platform() {
             <div className='discover_movies_title'>Platforms</div>
             {!loading ? <div className='platforms'>
                 {platforms?.map((platform) => {
-                    return <div onClick={() => history.push(`/singletype/${platform.id}/platforms/${platform.name}`)} className='single_platform' style={{ backgroundImage: `url(${platform.image_background})` }}><div className='single_platform_content'>{platform.name}</div></div>
+                    return <div key={platform.id} onClick={() => history.push(`/singletype/${platform.id}/platforms/${platform.name}`)} className='single_platform' style={{ backgroundImage: `url(${platform.image_background})` }}><div className='single_platform_content'>{platform.name}</div></div>
                 })}
             </div> : <div className='loading'><CircularProgress color='error' /></div>}
         </>

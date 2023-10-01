@@ -15,6 +15,21 @@
   overflow: auto;
 }
 
+.search_placeholder {
+  background-color: black;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin: 0 10px;
+}
+
+.trending_scroll_responsive {
+  display: flex;
+  overflow: auto;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .type_name {
   text-transform: capitalize;
 }
@@ -26,12 +41,28 @@
   border-radius: 10px 10px 0 0;
 }
 
+.pictures {
+  display: flex;
+  align-items: center;
+  overflow: auto;
+}
+
+.picture {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
 .single_game_tile {
   background-color: rgb(43, 43, 43);
   border-radius: 10px;
   margin: 5px;
   cursor: pointer;
   transition: all .5s;
+  width: fit-content;
 }
 
 .single_game_tile:hover {
@@ -65,6 +96,7 @@
 
 .single_game_tile_content {
   padding: 10px;
+  max-width: 350px;
 }
 
 .single_game_scroll_platforms {
@@ -125,6 +157,7 @@
   width: 100%;
   height: auto;
   margin-top: 10px;
+  border-radius: 10px;
 }
 
 .screenshots {
@@ -212,8 +245,8 @@
 }
 
 .singlecontentposter {
-  height: 500px;
-  width: 300px;
+  height: 300px;
+  width: 100%;
   border-radius: 10px;
   object-fit: cover;
 }
@@ -221,6 +254,12 @@
 .backdrop_opacity {
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 10px;
+}
+
+.searchresultfor {
+  margin: 0px 10px;
+  font-size: 14px;
+  color: gray;
 }
 
 .singlecontent_responsive {
@@ -231,6 +270,58 @@
 
 .details {
   padding: 20px;
+}
+
+.profile_header {
+  display: grid;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.User {
+  cursor: pointer;
+  border-radius: 10px;
+  position: relative;
+  transition: transform .2s;
+  height: 200px;
+  align-items: flex-end;
+  display: flex;
+  width: 100%;
+}
+
+.User:hover {
+  transform: scale(0.95);
+}
+
+.user_username {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: 100%;
+}
+
+.profile_image {
+  height: 200px;
+  width: 200px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.profile_username {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.profile_actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.refresh_icon {
+  padding: 0 5px !important;
 }
 
 .overview {
@@ -316,7 +407,71 @@
   align-items: center;
 }
 
+.login__container {
+  padding: 40px;
+  min-width: 400px;
+  text-align: center;
+}
+
+.login__text>h4 {
+  font-size: 40px;
+  color: white;
+}
+
+.login__text {
+  margin-bottom: 30px;
+}
+
+.login__withGoogle {
+  cursor: pointer;
+  flex: 1;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid lightgray;
+  width: 300px;
+  margin-top: 40px;
+  color: white;
+}
+
+.login__withGoogle>img {
+  height: 25px !important;
+  margin-right: 10px;
+}
+
+.login__withGoogle:hover {
+  background-color: rgb(220, 53, 69);
+}
+
+.singlecontentposter_responsive {
+  display: none;
+}
+
 @media only screen and (max-width: 600px) {
+
+  .user_username {
+    font-size: 16px;
+  }
+
+  .user_image {
+    height: 200px;
+  }
+
+  .profile_username {
+    font-size: 25px;
+  }
+
+  .profile_image {
+    height: 120px;
+    width: 120px;
+  }
+
+  .screenshots {
+    width: 90%;
+    margin: auto;
+  }
 
   .input_search {
     font-size: 18px !important;
@@ -332,6 +487,11 @@
   .single_game_tile_poster {
     height: 150px;
     width: 300px;
+  }
+
+  .single_game_tile_content {
+    padding: 5px;
+    max-width: 300px;
   }
 
   .platform_icon_small {
@@ -353,7 +513,7 @@
   }
 
   .welcomeText {
-    font-size: 25px;
+    font-size: 30px;
   }
 
   .welcomeDesc {
@@ -381,6 +541,7 @@
 }
 
 @media only screen and (max-width: 880px) {
+
   .singlecontent_responsive {
     display: grid;
     padding: 0;
@@ -401,7 +562,7 @@
   }
 
   .details {
-    padding: 20px 10px;
+    padding: 5px;
   }
 
   .pc {
@@ -418,5 +579,25 @@
 
   .tagline {
     color: unset;
+  }
+}
+
+@media screen and (max-width: 990px) {
+  .login__container>img {
+    height: 110px;
+  }
+
+  .login__container {
+    padding: 20px;
+    min-width: 320px;
+  }
+
+  .login__withGoogle>span {
+    font-size: 15px;
+  }
+
+  .login__withGoogle>img {
+    height: 20px !important;
+    margin-right: 10px;
   }
 }

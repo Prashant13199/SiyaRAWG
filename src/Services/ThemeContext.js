@@ -18,7 +18,7 @@ export default function ThemeContext(props) {
     );
 
     return (
-        <ColorModeContext.Provider>
+        <ColorModeContext.Provider value={setMode}>
             <ThemeProvider theme={theme}>
                 {props.children}
             </ThemeProvider>

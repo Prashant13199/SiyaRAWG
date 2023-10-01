@@ -25,7 +25,7 @@ export default function Publisher() {
             <div className='discover_movies_title'>Publishers</div>
             {!loading ? <div className='platforms'>
                 {publishers?.map((platform) => {
-                    return <div onClick={() => history.push(`/singletype/${platform.id}/publishers/${platform.name}`)} className='single_platform' style={{ backgroundImage: `url(${platform.image_background})` }}><div className='single_platform_content'>{platform.name}</div></div>
+                    return <div key={platform.id} onClick={() => history.push(`/singletype/${platform.id}/publishers/${platform.name}`)} className='single_platform' style={{ backgroundImage: `url(${platform.image_background})` }}><div className='single_platform_content'>{platform.name}</div></div>
                 })}
             </div> : <div className='loading'><CircularProgress color='error' /></div>}
         </>
