@@ -52,9 +52,9 @@ export default function SingleContent() {
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
 
-    console.log(game)
-
     useEffect(() => {
+
+        setChecked(true)
 
         database.ref(`/Users/${currentuid}`).on('value', snapshot => {
             setCurrentusername(snapshot.val()?.username)
@@ -106,10 +106,7 @@ export default function SingleContent() {
 
     const fetchGame = () => {
         fetch(`https://api.rawg.io/api/games/${id}?key=${process.env.REACT_APP_API_KEY}`)
-            .then(res => res.json()).then((game) => {
-                setGame(game)
-                setChecked(true)
-            }).catch((e) => console.log(e))
+            .then(res => res.json()).then((game) => setGame(game)).catch((e) => console.log(e))
 
         fetch(`https://api.rawg.io/api/games/${id}/screenshots?key=${process.env.REACT_APP_API_KEY}`)
             .then(res => res.json()).then((photo) => {
@@ -218,27 +215,27 @@ export default function SingleContent() {
                     <div className='actions'>
                         {currentuid && <div style={{ marginRight: '20px' }}>
                             <Tooltip title="Favourite">
-                                <IconButton style={{ backgroundColor: theme.palette.error.main }} onClick={() => handleFavourite()}>
+                                <IconButton style={{ backgroundColor: theme.palette.info.main }} onClick={() => handleFavourite()}>
                                     {favourite ? <FavoriteIcon style={{ color: 'red' }} /> : <FavoriteIcon style={{ color: 'white' }} />}
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Library">
-                                <IconButton style={{ backgroundColor: theme.palette.error.main, marginLeft: '10px' }} onClick={() => handleLibrary()}>
+                                <IconButton style={{ backgroundColor: theme.palette.info.main, marginLeft: '10px' }} onClick={() => handleLibrary()}>
                                     {library ? <DoneIcon style={{ color: 'white' }} /> : <AddIcon style={{ color: 'white' }} />}
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Playing">
-                                <IconButton style={{ backgroundColor: theme.palette.error.main, marginLeft: '10px' }} onClick={() => handlePlaying()}>
+                                <IconButton style={{ backgroundColor: theme.palette.info.main, marginLeft: '10px' }} onClick={() => handlePlaying()}>
                                     {playing ? <PlayCircleFilledWhiteIcon style={{ color: 'white' }} /> : <PlayCircleOutlineIcon style={{ color: 'white' }} />}
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Played">
-                                <IconButton style={{ backgroundColor: theme.palette.error.main, marginLeft: '10px' }} onClick={() => handlePlayed()}>
+                                <IconButton style={{ backgroundColor: theme.palette.info.main, marginLeft: '10px' }} onClick={() => handlePlayed()}>
                                     {played ? <FeaturedVideoIcon style={{ color: 'white' }} /> : <FeaturedVideoOutlinedIcon style={{ color: 'white' }} />}
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Share" onClick={() => handleShow2()}>
-                                <IconButton style={{ backgroundColor: theme.palette.error.main, marginLeft: '10px' }} >
+                                <IconButton style={{ backgroundColor: theme.palette.info.main, marginLeft: '10px' }} >
                                     <SendIcon style={{ color: 'white' }} />
                                 </IconButton>
                             </Tooltip>
@@ -265,7 +262,7 @@ export default function SingleContent() {
                     {game.description_raw && <div className='overview'>
                         <h4>Overview</h4>
                         {game.description_raw?.length > 200 && !readMore ? game.description_raw.substring(0, 200).concat('...') : game.description_raw}
-                        <span className='readmore' style={{ color: theme.palette.error.main }} onClick={() => setReadMore(!readMore)}>{game.description_raw && game.description_raw?.length > 200 && (!readMore ? 'read more.' : 'Less')}</span>
+                        <span className='readmore' style={{ color: theme.palette.info.main }} onClick={() => setReadMore(!readMore)}>{game.description_raw && game.description_raw?.length > 200 && (!readMore ? 'read more.' : 'Less')}</span>
                     </div>}
 
                 </div>

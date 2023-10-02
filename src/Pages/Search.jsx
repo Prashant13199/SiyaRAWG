@@ -48,7 +48,7 @@ export default function Search() {
             </div>
             {content?.length === 0 && query && <center>
                 <img src={empty} width={'100px'} height={'auto'} />
-                <h6 style={{ color: 'gray' }}>Oops... no tv shows found</h6></center>}
+                <h6>Oops... no games found</h6></center>}
         </div>
     )
 }

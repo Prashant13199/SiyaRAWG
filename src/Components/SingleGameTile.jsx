@@ -35,22 +35,22 @@ export default function SingleGameTile({ data, by, byuid, id }) {
                     className="single_game_tile_poster"
                 />
                 <div className='single_game_tile_content'>
-                    <div className='single_game_scroll_platforms'>
-                        {data?.parent_platforms?.map((p, index) => {
-                            return <img key={index} className='platform_icon_small' src={p.platform.name === 'PC' ? pc : '' || p.platform.name === 'PlayStation' ? ps : '' || p.platform.name === 'PC' ? pc : '' || p.platform.name === 'Xbox' ? xbox : '' || p.platform.name === "Nintendo" ? nintendo : '' || p.platform.name === "Apple Macintosh" ? apple : '' || p.platform.name === "Android" ? android : '' || p.platform.name === "Linux" ? linux : ''} />
-                        })}
-                    </div>
-                    <div className='single_game_tile_content_bottom'>
-                        <div className='single_game_tile_title'>
-                            {data?.name}
+                    <div className='single_game_tile_content_top'>
+                        <div className='single_game_scroll_platforms'>
+                            {data?.parent_platforms?.map((p, index) => {
+                                return <img key={index} className='platform_icon_small' src={p.platform.name === 'PC' ? pc : '' || p.platform.name === 'PlayStation' ? ps : '' || p.platform.name === 'PC' ? pc : '' || p.platform.name === 'Xbox' ? xbox : '' || p.platform.name === "Nintendo" ? nintendo : '' || p.platform.name === "Apple Macintosh" ? apple : '' || p.platform.name === "Android" ? android : '' || p.platform.name === "Linux" ? linux : ''} />
+                            })}
                         </div>
-                        {data?.rating !== 0 ? <div className='rating'>{data?.rating}</div> : <div></div>}
+                        {data?.rating !== 0 ? <div className='rating' style={{ borderColor: data?.rating > 3 ? 'green' : 'yellow', color: data?.rating > 3 ? 'lightgreen' : 'lightyellow' }}>{data?.rating}</div> : <div></div>}
+                    </div>
+                    <div className='single_game_tile_title'>
+                        {data?.name}
                     </div>
                 </div>
             </div>
-            {by && <div className='user' style={{ color: theme.palette.error.main }}>
+            {by && <div className='user'>
                 <DeleteIcon style={{ cursor: 'pointer' }} onClick={() => removeSuggestion()} />
-                <Link style={{ color: theme.palette.error.main, textDecoration: 'none' }} to={`/user/${byuid}`}>{by}</Link>
+                <Link style={{ color: theme.palette.text.primary, textDecoration: 'none' }} to={`/user/${byuid}`}>{by}</Link>
             </div>}
         </>
     )

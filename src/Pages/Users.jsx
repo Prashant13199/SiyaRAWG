@@ -38,6 +38,6 @@ export default function Users() {
         </div>
     )
         : <div className="loading">
-            <CircularProgress color='error' />
+            <CircularProgress color='info' />
         </div>
 }

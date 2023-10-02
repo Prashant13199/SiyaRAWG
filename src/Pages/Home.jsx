@@ -19,6 +19,7 @@ export default function Home() {
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
+        setChecked(true)
         fetchTrending()
         fetchPopular()
         fetchUpcoming()
@@ -42,10 +43,7 @@ export default function Home() {
 
     const fetchNewgames = () => {
         fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&dates=${lastYear},${currentDate}&ordering=-released&page_size=1000`)
-            .then(res => res.json()).then((data) => {
-                setNewgames(data.results)
-                setChecked(true)
-            }).catch((e) => console.log(e))
+            .then(res => res.json()).then((data) => setNewgames(data.results)).catch((e) => console.log(e))
     }
 
     const getCurrentMonth = function () {

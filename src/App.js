@@ -33,13 +33,13 @@ function App() {
     <LoadingScreen
       loading={loading}
       bgColor='background.default'
-      spinnerColor={theme.palette.error.main}
+      spinnerColor={theme.palette.info.main}
       logoSrc={logo}
     >
       <BrowserRouter>
         <div className="App">
           <NavBarMain />
-          <Box sx={{ flexGrow: 1, marginY: 7, marginX: 0.2 }}>
+          <Box sx={{ flexGrow: 1, marginY: 7, marginX: 0.2, color: theme.palette.text.primary }}>
             <Switch>
               <Route path="/" component={Home} exact />
               <Route path="/game/:id" component={SingleContent} exact />

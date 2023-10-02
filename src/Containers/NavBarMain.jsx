@@ -3,7 +3,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import logo from '../Assets/logo.png'
 import { NavLink, useLocation } from "react-router-dom";
-import TvIcon from '@mui/icons-material/Tv';
 import MovieIcon from '@mui/icons-material/Movie';
 import PeopleIcon from '@mui/icons-material/People';
 import { Button, IconButton } from '@mui/material';
@@ -54,50 +53,42 @@ export default function NavBarMain() {
             <div style={{ display: 'flex' }}>
               <img src={logo} height={'35px'} width={'35px'} alt="logo" />
               <div style={{ fontSize: '25px' }}>
-                <span style={{ fontSize: '18px', marginLeft: '5px', color: theme.palette.error.main }}>SIYA<strong>RAWG</strong></span>
+                <span style={{ fontSize: '18px', marginLeft: '5px' }}>SIYA<strong>RAWG</strong></span>
               </div>
             </div>
           </NavLink>
         </Navbar.Brand>
         <Nav className="me-auto"></Nav>
-        {uid ? <Nav>
+        <Nav>
           <NavLink to='/search' activeClassName="is-active" className="navlink"
-            exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.error.main }}>
-            <div className='search_placeholder'><SearchIcon /> Search</div>
+            exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.info.main }}>
+            {uid ? <div className='search_placeholder'><SearchIcon /> Search</div> : <SearchIcon />}
           </NavLink>
         </Nav>
-          :
-          <Nav>
-            <NavLink to='/search' activeClassName="is-active" className="navlink"
-              exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.error.main }}>
-              <IconButton><SearchIcon /></IconButton>
-            </NavLink>
-          </Nav>
-        }
         {uid ? <Nav>
-          <NavLink to='/profile' activeClassName="is-active" style={{ textDecoration: 'none', color: 'white' }} className="navlink" activeStyle={{ color: theme.palette.error.main }}
+          <NavLink to='/profile' activeClassName="is-active" style={{ textDecoration: 'none', color: 'white' }} className="navlink" activeStyle={{ color: theme.palette.info.main }}
             exact={true}><img alt="" src={currentPhoto ? currentPhoto : `https://api.dicebear.com/6.x/thumbs/png?seed=Bubba`} className={location && location.pathname === '/profile' ? 'navbar__img_active' : 'navbar__img'} /></NavLink>
         </Nav>
           :
           <Nav>
-            <Button color='error' onClick={handleShow}>Login</Button>
-            <Button color='error' onClick={handleShow2}>Register</Button>
+            <Button color='info' onClick={handleShow}>Login</Button>
+            <Button color='info' onClick={handleShow2}>Register</Button>
           </Nav>
         }
       </Navbar>
       <Navbar bg='dark' variant='dark' fixed='bottom' style={{ height: '50px', padding: '0px 2px' }}>
         <Nav className="me-auto pc"></Nav>
         <Nav><NavLink to='/' activeClassName="is-active" className="navlink"
-          exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.error.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><GamesIcon /></div><div>Games</div></div></NavLink></Nav>
+          exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.info.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><GamesIcon /></div><div>Games</div></div></NavLink></Nav>
         <Nav className="me-auto"></Nav>
         <Nav><NavLink to='/platform' activeClassName="is-active" className="navlink"
-          exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.error.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><MovieIcon /></div><div>Platforms</div></div></NavLink></Nav>
+          exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.info.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><MovieIcon /></div><div>Platforms</div></div></NavLink></Nav>
         <Nav className="me-auto"></Nav>
         <Nav><NavLink to='/publisher' activeClassName="is-active" className="navlink"
-          exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.error.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><PublishIcon /></div><div>Publishers</div></div></NavLink></Nav>
+          exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.info.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><PublishIcon /></div><div>Publishers</div></div></NavLink></Nav>
         {uid && <><Nav className="me-auto"></Nav>
           <Nav><NavLink to='/users' activeClassName="is-active" className="navlink"
-            exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.error.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><PeopleIcon /></div><div>Users</div></div></NavLink></Nav></>}
+            exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.info.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><PeopleIcon /></div><div>Users</div></div></NavLink></Nav></>}
         <Nav className="me-auto pc"></Nav>
       </Navbar>
     </>

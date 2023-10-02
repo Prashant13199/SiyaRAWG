@@ -104,7 +104,7 @@ export default function Login() {
                     <br />
                     <div className="d-grid gap-2" style={{ marginTop: "20px" }}>
                         <Button
-                            variant="danger"
+                            variant="info"
                             size="md"
                             id="uploadBtn"
                             onClick={() => login()}
@@ -113,7 +113,7 @@ export default function Login() {
                         </Button>
                     </div>
                     <div className="d-grid gap-2" style={{ marginTop: "10px", cursor: 'pointer' }}>
-                        <a href="#" onClick={() => handleShow2()} style={{ textDecoration: 'none', color: theme.palette.error.main }}>Forgot Password?</a>
+                        <a href="#" onClick={() => handleShow2()} style={{ textDecoration: 'none', color: theme.palette.info.main }}>Forgot Password?</a>
                     </div>
                     <GoogleSignin />
                 </div>

@@ -48,7 +48,7 @@ export default function SingleType() {
                     return <SingleGameTile data={data} key={data.id} />
                 })}
             </div>
-            </> : < div className='loading'><CircularProgress color="error" /></div>}
+            </> : < div className='loading'><CircularProgress color="info" /></div>}
             <br />
             {numOfPages > 1 && (
                 <CustomPagination setPage={setPage} numOfPages={numOfPages} />

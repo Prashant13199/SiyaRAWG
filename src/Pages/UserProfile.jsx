@@ -150,7 +150,7 @@ export default function UserProfile() {
                     </div></>}
                 {favourite.length === 0 && library.length === 0 && playing.length === 0 && played.length === 0 && <center><br />
                     <img src={empty} width={'100px'} height={'auto'} />
-                    <h6 style={{ color: 'gray' }}>Nothing to show</h6>
+                    <h6>Nothing to show</h6>
                     <h3>Add to Watchlist or Favourite to appear here</h3></center>}
             </div>
         </Grow>

@@ -59,8 +59,8 @@ export default function Profile() {
   }
 
   const fetchRecommendation = async () => {
-    if (favourite?.length) {
-      fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&publishers=${favourite[number].game?.publishers[0].id}&page_size=1000`)
+    if (favourite?.length !== 0 && favourite[number]?.game?.publishers.length !== 0) {
+      fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&publishers=${favourite[number]?.game?.publishers[0]?.id}&page_size=1000`)
         .then(res => res.json()).then((data) => setRecommendation(data.results)).catch((e) => console.log(e))
     }
   };
@@ -160,12 +160,12 @@ export default function Profile() {
                   <div style={{ position: 'relative', width: 'fit-content' }}>
                     <img src={currentPhoto ? currentPhoto : `https://api.dicebear.com/6.x/thumbs/png?seed=Bubba`} className='profile_image' />
                     <div style={{ position: 'absolute', left: 5, bottom: 5 }}>
-                      <IconButton style={{ backgroundColor: theme.palette.background.default }}><CreateIcon color="error" fontSize='small' onClick={() => handleShow()} /></IconButton>
+                      <IconButton style={{ backgroundColor: theme.palette.background.default }}><CreateIcon color="info" fontSize='small' onClick={() => handleShow()} /></IconButton>
                     </div>
                   </div>
                   <div className="profile_actions">
                     <div className='profile_username'>{currentusername ? currentusername.length > 20 ? currentusername.substring(0, 20).concat('...') : currentusername : 'Loading...'}</div>
-                    &nbsp;<IconButton onClick={() => signOut()} style={{ backgroundColor: theme.palette.background.default }}><LogoutIcon color="error" /></IconButton>
+                    &nbsp;<IconButton onClick={() => signOut()} style={{ backgroundColor: theme.palette.background.default }}><LogoutIcon color="info" /></IconButton>
                   </div>
                 </div>
               </div>

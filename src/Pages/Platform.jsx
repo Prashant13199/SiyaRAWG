@@ -27,7 +27,7 @@ export default function Platform() {
                 {platforms?.map((platform) => {
                     return <div key={platform.id} onClick={() => history.push(`/singletype/${platform.id}/platforms/${platform.name}`)} className='single_platform' style={{ backgroundImage: `url(${platform.image_background})` }}><div className='single_platform_content'>{platform.name}</div></div>
                 })}
-            </div> : <div className='loading'><CircularProgress color='error' /></div>}
+            </div> : <div className='loading'><CircularProgress color='info' /></div>}
         </>
     )
 }

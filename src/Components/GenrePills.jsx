@@ -46,7 +46,7 @@ export default function GenrePills({
                     label={genre.name}
                     key={genre.id}
                     clickable
-                    color='primary'
+                    color='info'
                     size="small"
                     onDelete={() => handleRemove(genre)}
                 />
@@ -58,7 +58,7 @@ export default function GenrePills({
                     key={genre.id}
                     clickable
                     size="small"
-                    color='error'
+                    color='primary'
                     onClick={() => handleAdd(genre)}
                 />
             ))}
