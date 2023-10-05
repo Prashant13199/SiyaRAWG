@@ -22,7 +22,7 @@ import android from '../Assets/android.png'
 import linux from '../Assets/linux.png'
 import '../index.css'
 import SingleGameTile from '../Components/SingleGameTile';
-import { database } from '../firebase';
+import { auth, database } from '../firebase';
 import { Modal } from 'react-bootstrap';
 import CloseIcon from '@mui/icons-material/Close';
 import Snackbar from '@mui/material/Snackbar';
@@ -32,7 +32,6 @@ export default function SingleContent() {
 
     const { id } = useParams()
     const theme = useTheme()
-    const currentuid = localStorage.getItem('uid')
 
     const [readMore, setReadMore] = useState(false)
     const [checked, setChecked] = useState(false);
@@ -56,11 +55,11 @@ export default function SingleContent() {
 
         setChecked(true)
 
-        database.ref(`/Users/${currentuid}`).on('value', snapshot => {
+        database.ref(`/Users/${auth?.currentUser?.uid}`).on('value', snapshot => {
             setCurrentusername(snapshot.val()?.username)
         })
 
-        database.ref(`/Users/${currentuid}/favourites/${id}`).on('value', snapshot => {
+        database.ref(`/Users/${auth?.currentUser?.uid}/favourites/${id}`).on('value', snapshot => {
             if (snapshot.val()?.id === id) {
                 setFavourite(true)
             } else {
@@ -68,7 +67,7 @@ export default function SingleContent() {
             }
         })
 
-        database.ref(`/Users/${currentuid}/library/${id}`).on('value', snapshot => {
+        database.ref(`/Users/${auth?.currentUser?.uid}/library/${id}`).on('value', snapshot => {
             if (snapshot.val()?.id === id) {
                 setLibrary(true)
             } else {
@@ -76,7 +75,7 @@ export default function SingleContent() {
             }
         })
 
-        database.ref(`/Users/${currentuid}/played/${id}`).on('value', snapshot => {
+        database.ref(`/Users/${auth?.currentUser?.uid}/played/${id}`).on('value', snapshot => {
             if (snapshot.val()?.id === id) {
                 setPlayed(true)
             } else {
@@ -84,7 +83,7 @@ export default function SingleContent() {
             }
         })
 
-        database.ref(`/Users/${currentuid}/playing/${id}`).on('value', snapshot => {
+        database.ref(`/Users/${auth?.currentUser?.uid}/playing/${id}`).on('value', snapshot => {
             if (snapshot.val()?.id === id) {
                 setPlaying(true)
             } else {
@@ -95,7 +94,7 @@ export default function SingleContent() {
         database.ref(`/Users`).on('value', snapshot => {
             let user = []
             snapshot.forEach((snap) => {
-                if (snap.key !== currentuid) {
+                if (snap.key !== auth?.currentUser?.uid) {
                     user.push(snap.val())
                 }
             })
@@ -126,13 +125,13 @@ export default function SingleContent() {
 
     const handleFavourite = () => {
         if (!favourite) {
-            database.ref(`/Users/${currentuid}/favourites/${id}`).set({
+            database.ref(`/Users/${auth?.currentUser?.uid}/favourites/${id}`).set({
                 id: id, game: game
             }).then(() => {
                 setFavourite(true)
             })
         } else {
-            database.ref(`/Users/${currentuid}/favourites/${id}`).remove().then(() => {
+            database.ref(`/Users/${auth?.currentUser?.uid}/favourites/${id}`).remove().then(() => {
                 setFavourite(false)
             })
         }
@@ -140,13 +139,13 @@ export default function SingleContent() {
 
     const handleLibrary = () => {
         if (!library) {
-            database.ref(`/Users/${currentuid}/library/${id}`).set({
+            database.ref(`/Users/${auth?.currentUser?.uid}/library/${id}`).set({
                 id: id, game: game
             }).then(() => {
                 setLibrary(true)
             })
         } else {
-            database.ref(`/Users/${currentuid}/library/${id}`).remove().then(() => {
+            database.ref(`/Users/${auth?.currentUser?.uid}/library/${id}`).remove().then(() => {
                 setLibrary(false)
             })
         }
@@ -154,13 +153,13 @@ export default function SingleContent() {
 
     const handlePlayed = () => {
         if (!played) {
-            database.ref(`/Users/${currentuid}/played/${id}`).set({
+            database.ref(`/Users/${auth?.currentUser?.uid}/played/${id}`).set({
                 id: id, game: game
             }).then(() => {
                 setPlayed(true)
             })
         } else {
-            database.ref(`/Users/${currentuid}/played/${id}`).remove().then(() => {
+            database.ref(`/Users/${auth?.currentUser?.uid}/played/${id}`).remove().then(() => {
                 setPlayed(false)
             })
         }
@@ -168,13 +167,13 @@ export default function SingleContent() {
 
     const handlePlaying = () => {
         if (!playing) {
-            database.ref(`/Users/${currentuid}/playing/${id}`).set({
+            database.ref(`/Users/${auth?.currentUser?.uid}/playing/${id}`).set({
                 id: id, game: game
             }).then(() => {
                 setPlaying(true)
             })
         } else {
-            database.ref(`/Users/${currentuid}/playing/${id}`).remove().then(() => {
+            database.ref(`/Users/${auth?.currentUser?.uid}/playing/${id}`).remove().then(() => {
                 setPlaying(false)
             })
         }
@@ -182,94 +181,12 @@ export default function SingleContent() {
 
     const handleSend = (user) => {
         database.ref(`/Users/${user}/suggestions/${id}`).update({
-            id: id, game: game, by: currentusername, byuid: currentuid
+            id: id, game: game, by: currentusername, byuid: auth?.currentUser?.uid
         }).then(() => {
             handleClose2()
             setSnackBar(true)
         }).catch((e) => { console.log(e) })
     }
-
-    const render = (
-        <Grow in={checked} {...(checked ? { timeout: 1000 } : {})} style={{ transformOrigin: '0 0 0' }}>
-            <div className='singlecontent_responsive'>
-                <div className='details'>
-                    <h1 className='pc' style={{ fontWeight: 'bold' }}>{game.name}</h1>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {(game.release_date || game.first_air_date) && <>{game.release_date || game.first_air_date}{(game.release_date || game.first_air_date) && game.runtime && <>&nbsp;&#183;&nbsp;</>}</>}{game.runtime && game.runtime !== 0 && <>{Math.ceil(game.runtime / 60)}h</>}
-                    </div>
-                    {game.released && <div className='overview released'>
-                        {game?.released}
-                    </div>}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px 0px' }}>
-                        {game.genres && game.genres.map((g) => { return <div key={g.id} className='genrelist'>{g.name}</div> })}
-                    </div>
-                    <div className='single_game_scroll_platforms'>
-                        {game.parent_platforms?.map((p, index) => {
-                            return <img key={index} className='platform_icon_large' src={p.platform.name === 'PC' && pc || p.platform.name === 'PlayStation' && ps || p.platform.name === 'PC' && pc || p.platform.name === 'Xbox' && xbox || p.platform.name === "Nintendo" && nintendo || p.platform.name === "Apple Macintosh" && apple || p.platform.name === "Android" && android || p.platform.name === "Linux" && linux} />
-                        })}
-                    </div>
-                    {game.vote_average !== 0 && <div className='overview'>
-                        <StarIcon style={{ color: "#FFD700" }} /> {game.rating?.toFixed(2)}<span style={{ fontSize: 'small', opacity: 0.6 }}>/5</span>
-                    </div>}
-
-                    <div className='actions'>
-                        {currentuid && <div style={{ marginRight: '20px' }}>
-                            <Tooltip title="Favourite">
-                                <IconButton style={{ backgroundColor: theme.palette.info.main }} onClick={() => handleFavourite()}>
-                                    {favourite ? <FavoriteIcon style={{ color: 'red' }} /> : <FavoriteIcon style={{ color: 'white' }} />}
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Library">
-                                <IconButton style={{ backgroundColor: theme.palette.info.main, marginLeft: '10px' }} onClick={() => handleLibrary()}>
-                                    {library ? <DoneIcon style={{ color: 'white' }} /> : <AddIcon style={{ color: 'white' }} />}
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Playing">
-                                <IconButton style={{ backgroundColor: theme.palette.info.main, marginLeft: '10px' }} onClick={() => handlePlaying()}>
-                                    {playing ? <PlayCircleFilledWhiteIcon style={{ color: 'white' }} /> : <PlayCircleOutlineIcon style={{ color: 'white' }} />}
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Played">
-                                <IconButton style={{ backgroundColor: theme.palette.info.main, marginLeft: '10px' }} onClick={() => handlePlayed()}>
-                                    {played ? <FeaturedVideoIcon style={{ color: 'white' }} /> : <FeaturedVideoOutlinedIcon style={{ color: 'white' }} />}
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Share" onClick={() => handleShow2()}>
-                                <IconButton style={{ backgroundColor: theme.palette.info.main, marginLeft: '10px' }} >
-                                    <SendIcon style={{ color: 'white' }} />
-                                </IconButton>
-                            </Tooltip>
-                        </div>}
-                    </div>
-
-                    {game?.publishers?.length !== 0 && <div className='overview'>
-                        <h4>Publishers</h4>
-                        <ul>
-                            {game.publishers?.map((pub) => {
-                                return <li key={pub.id}>{pub.name}</li>
-                            })}
-                        </ul>
-                    </div>}
-
-                    {game?.developers?.length !== 0 && <div className='overview'>
-                        <h4>Developers</h4>
-                        <ul>
-                            {game.developers?.map((dev) => {
-                                return <li key={dev.id}>{dev.name}</li>
-                            })}
-                        </ul>
-                    </div>}
-                    {game.description_raw && <div className='overview'>
-                        <h4>Overview</h4>
-                        {game.description_raw?.length > 200 && !readMore ? game.description_raw.substring(0, 200).concat('...') : game.description_raw}
-                        <span className='readmore' style={{ color: theme.palette.info.main }} onClick={() => setReadMore(!readMore)}>{game.description_raw && game.description_raw?.length > 200 && (!readMore ? 'read more.' : 'Less')}</span>
-                    </div>}
-
-                </div>
-            </div>
-        </Grow>
-    )
-
 
     return (
         <>
@@ -316,33 +233,90 @@ export default function SingleContent() {
                     Suggested to {name && name.length > 12 ? name.substring(0, 12).concat('...') : name}!
                 </Alert></Snackbar>
             <div>
-                <div className='pc'>
-                    <div style={{ backgroundImage: game?.background_image ? `url(${game?.background_image})` : 'linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', borderRadius: '10px' }}>
-                        <div className='backdrop_opacity'>
-                            {render}
+                <div className='page_header_text'>{game?.name}</div>
+                <div className='singlecontent_responsive'>
+                    <div className='details'>
+                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                            {(game.release_date || game.first_air_date) && <>{game.release_date || game.first_air_date}{(game.release_date || game.first_air_date) && game.runtime && <>&nbsp;&#183;&nbsp;</>}</>}{game.runtime && game.runtime !== 0 && <>{Math.ceil(game.runtime / 60)}h</>}
                         </div>
+                        {game.released && <div className='overview released'>
+                            {game?.released}
+                        </div>}
+                        <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px 0px' }}>
+                            {game.genres && game.genres.map((g) => { return <div key={g.id} className='genrelist'>{g.name}</div> })}
+                        </div>
+                        <div className='single_game_scroll_platforms'>
+                            {game.parent_platforms?.map((p, index) => {
+                                return <img key={index} className='platform_icon_large' src={p.platform.name === 'PC' && pc || p.platform.name === 'PlayStation' && ps || p.platform.name === 'PC' && pc || p.platform.name === 'Xbox' && xbox || p.platform.name === "Nintendo" && nintendo || p.platform.name === "Apple Macintosh" && apple || p.platform.name === "Android" && android || p.platform.name === "Linux" && linux} />
+                            })}
+                        </div>
+                        {game.vote_average !== 0 && <div className='overview'>
+                            <StarIcon style={{ color: "#FFD700" }} /> {game.rating?.toFixed(2)}<span style={{ fontSize: 'small', opacity: 0.6 }}>/5</span>
+                        </div>}
+
+                        <div className='actions'>
+                            {auth?.currentUser?.uid && <div style={{ marginRight: '20px' }}>
+                                <Tooltip title="Favourite">
+                                    <IconButton style={{ backgroundColor: theme.palette.success.main }} onClick={() => handleFavourite()}>
+                                        {favourite ? <FavoriteIcon style={{ color: 'red' }} /> : <FavoriteIcon style={{ color: 'white' }} />}
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Library">
+                                    <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} onClick={() => handleLibrary()}>
+                                        {library ? <DoneIcon style={{ color: 'white' }} /> : <AddIcon style={{ color: 'white' }} />}
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Playing">
+                                    <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} onClick={() => handlePlaying()}>
+                                        {playing ? <PlayCircleFilledWhiteIcon style={{ color: 'white' }} /> : <PlayCircleOutlineIcon style={{ color: 'white' }} />}
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Played">
+                                    <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} onClick={() => handlePlayed()}>
+                                        {played ? <FeaturedVideoIcon style={{ color: 'white' }} /> : <FeaturedVideoOutlinedIcon style={{ color: 'white' }} />}
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Share" onClick={() => handleShow2()}>
+                                    <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} >
+                                        <SendIcon style={{ color: 'white' }} />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>}
+                        </div>
+
+                        {game?.publishers?.length !== 0 && <div className='overview'>
+                            <h4>Publishers</h4>
+                            <ul>
+                                {game.publishers?.map((pub) => {
+                                    return <li key={pub.id}>{pub.name}</li>
+                                })}
+                            </ul>
+                        </div>}
+
+                        {game?.developers?.length !== 0 && <div className='overview'>
+                            <h4>Developers</h4>
+                            <ul>
+                                {game.developers?.map((dev) => {
+                                    return <li key={dev.id}>{dev.name}</li>
+                                })}
+                            </ul>
+                        </div>}
+                        {game.description_raw && <div className='overview'>
+                            <h4>Overview</h4>
+                            {game.description_raw?.length > 200 && !readMore ? game.description_raw.substring(0, 200).concat('...') : game.description_raw}
+                            <span className='readmore' style={{ color: theme.palette.success.main }} onClick={() => setReadMore(!readMore)}>{game.description_raw && game.description_raw?.length > 200 && (!readMore ? 'read more.' : 'Less')}</span>
+                        </div>}
+
                     </div>
                 </div>
-                <div className='singlecontent'>
-                    <div className='mobile'>
-                        <div style={{ backgroundImage: game?.background_image ? `url(${game?.background_image})` : 'linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', borderRadius: '10px' }}>
-                            <div className='welcome_backdrop'>
-                                <div className='welcomeText'>{game?.name ? game?.name : 'Loading...'}</div>
-                            </div>
-                        </div>
-                        {render}
-                    </div>
-                    <div className='pc'><br /></div>
-                </div>
+                <br />
                 {similar?.length !== 0 && <>
                     <div className='trending_title'>Similar</div>
                     <div className='trending_scroll'>
                         {similar.map((data) => {
                             return <SingleGameTile data={data} key={data.id} />
                         })}
-                    </div>
-                    <br />
-                </>}
+                    </div><br /></>}
                 {screenshots?.length !== 0 && <><div className='trending_title'>Screenshots</div>
                     <div className='screenshots'>
                         {screenshots?.map((pic, index) => {

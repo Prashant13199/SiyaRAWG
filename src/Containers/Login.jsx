@@ -33,9 +33,6 @@ export default function Login() {
         setLoading(true);
         const user = await auth.signInWithEmailAndPassword(email, password).then((user) => {
             setLoading(false);
-            localStorage.setItem("uid", user.user.uid);
-            localStorage.setItem("username", email.replace("@gmail.com", ""));
-            window.location.reload();
         })
             .catch((e) => {
                 console.log(e);
@@ -104,7 +101,7 @@ export default function Login() {
                     <br />
                     <div className="d-grid gap-2" style={{ marginTop: "20px" }}>
                         <Button
-                            variant="info"
+                            variant="success"
                             size="md"
                             id="uploadBtn"
                             onClick={() => login()}
@@ -113,7 +110,7 @@ export default function Login() {
                         </Button>
                     </div>
                     <div className="d-grid gap-2" style={{ marginTop: "10px", cursor: 'pointer' }}>
-                        <a href="#" onClick={() => handleShow2()} style={{ textDecoration: 'none', color: theme.palette.info.main }}>Forgot Password?</a>
+                        <a href="#" onClick={() => handleShow2()} style={{ textDecoration: 'none', color: theme.palette.success.main }}>Forgot Password?</a>
                     </div>
                     <GoogleSignin />
                 </div>

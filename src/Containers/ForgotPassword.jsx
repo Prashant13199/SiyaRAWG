@@ -67,7 +67,7 @@ export default function ForgotPassword() {
                     </div>
                     <div className="d-grid gap-2" style={{ marginTop: "20px" }}>
                         <Button
-                            variant="info"
+                            variant="success"
                             size="md"
                             id="uploadBtn"
                             onClick={() => forgot()}

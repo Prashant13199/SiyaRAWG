@@ -16,10 +16,7 @@ export default function GoogleSignin() {
     if (userBySignIn) {
       database.ref(`/Users/${userBySignIn.uid}`).on("value", (snapshot) => {
         if (snapshot.val()) {
-          localStorage.setItem("uid", userBySignIn.uid);
-          localStorage.setItem('username', userBySignIn.email.replace("@gmail.com", ""))
           setLoading(false);
-          window.location.reload()
         } else {
           database.ref(`/Users/${userBySignIn.uid}`).update({
             uid: userBySignIn.uid,
@@ -29,10 +26,7 @@ export default function GoogleSignin() {
             username: userBySignIn.email.replace("@gmail.com", ""),
             timestamp: Date.now(),
           }).then(() => {
-            localStorage.setItem("uid", userBySignIn.uid);
-            localStorage.setItem('username', userBySignIn.email.replace("@gmail.com", ""))
             setLoading(false);
-            window.location.reload()
           }).catch((e) => {
             console.log(e);
           });

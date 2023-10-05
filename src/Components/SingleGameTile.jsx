@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import '../index.css'
 import xbox from '../Assets/xbox.png'
 import ps from '../Assets/ps.png'
@@ -13,10 +13,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useTheme } from '@mui/material'
 import { Link } from 'react-router-dom';
 
-export default function SingleGameTile({ data, by, byuid, id }) {
+export default function SingleGameTile({ data, by, byuid, id, recom }) {
 
     const history = useHistory()
     const theme = useTheme()
+    const [show, setShow] = useState(true)
 
     const removeSuggestion = () => {
         if (id) {
@@ -26,7 +27,19 @@ export default function SingleGameTile({ data, by, byuid, id }) {
         }
     }
 
-    return (
+    useEffect(() => {
+        if (recom) {
+            database.ref(`/Users/${auth?.currentUser?.uid}/played/${data.id}`).on('value', snapshot => {
+                if (snapshot?.val()) {
+                    setShow(false)
+                } else {
+                    setShow(true)
+                }
+            })
+        }
+    }, [])
+
+    return show && (
         <>
             <div className='single_game_tile' onClick={() => history.push(`/game/${data.id}`)}>
                 <img
@@ -41,7 +54,7 @@ export default function SingleGameTile({ data, by, byuid, id }) {
                                 return <img key={index} className='platform_icon_small' src={p.platform.name === 'PC' ? pc : '' || p.platform.name === 'PlayStation' ? ps : '' || p.platform.name === 'PC' ? pc : '' || p.platform.name === 'Xbox' ? xbox : '' || p.platform.name === "Nintendo" ? nintendo : '' || p.platform.name === "Apple Macintosh" ? apple : '' || p.platform.name === "Android" ? android : '' || p.platform.name === "Linux" ? linux : ''} />
                             })}
                         </div>
-                        {data?.rating !== 0 ? <div className='rating' style={{ borderColor: data?.rating > 3 ? 'green' : 'yellow', color: data?.rating > 3 ? 'lightgreen' : 'lightyellow' }}>{data?.rating}</div> : <div></div>}
+                        {data?.rating !== 0 ? <div className='rating' style={{ borderColor: data?.rating > 3 ? 'green' : 'yellow', color: data?.rating > 3 ? 'lightgreen' : 'yellow' }}>{data?.rating}</div> : <div></div>}
                     </div>
                     <div className='single_game_tile_title'>
                         {data?.name}

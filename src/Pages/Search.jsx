@@ -3,13 +3,11 @@ import '../index.css'
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import empty from '../Assets/empty.png'
-import { useTheme } from '@mui/material';
 import SingleGameTile from '../Components/SingleGameTile';
 
 export default function Search() {
 
     const [content, setContent] = useState([]);
-    const theme = useTheme()
     const [query, setQuery] = useState("")
 
     const fetchSearch = () => {
@@ -23,8 +21,8 @@ export default function Search() {
     }, [query])
 
     return (
-        <div className="search">
-            <div className='discover_movies_title'>Search</div>
+        <>
+            <div className='page_header_text'>Search</div>
             <Paper component="form" sx={{ p: '4px 4px', display: 'flex', alignItems: 'center', width: '98%', borderRadius: '20px', margin: 'auto' }}>
                 <InputBase
                     sx={{ ml: 1, flex: 1 }}
@@ -49,6 +47,6 @@ export default function Search() {
             {content?.length === 0 && query && <center>
                 <img src={empty} width={'100px'} height={'auto'} />
                 <h6>Oops... no games found</h6></center>}
-        </div>
+        </>
     )
 }

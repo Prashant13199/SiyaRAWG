@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Home from './Pages/Home';
 import LoadingScreen from 'react-loading-screen';
 import logo from './Assets/logo.png'
-import { Box, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import NavBarMain from './Containers/NavBarMain';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Search from './Pages/Search';
@@ -33,25 +33,23 @@ function App() {
     <LoadingScreen
       loading={loading}
       bgColor='background.default'
-      spinnerColor={theme.palette.info.main}
+      spinnerColor={theme.palette.success.main}
       logoSrc={logo}
     >
       <BrowserRouter>
         <div className="App">
           <NavBarMain />
-          <Box sx={{ flexGrow: 1, marginY: 7, marginX: 0.2, color: theme.palette.text.primary }}>
-            <Switch>
-              <Route path="/" component={Home} exact />
-              <Route path="/game/:id" component={SingleContent} exact />
-              <Route path="/search" component={Search} />
-              <Route path='/platform' component={Platform} />
-              <Route path='/publisher' component={Publisher} />
-              <Route path='/profile' component={Profile} />
-              <Route path='/user/:uid' component={UserProfile} />
-              <Route path='/singletype/:id/:type/:name' component={SingleType} />
-              <Route path='/users' component={Users} />
-            </Switch>
-          </Box>
+          <Switch>
+            <Route path="/" component={Home} exact />
+            <Route path="/game/:id" component={SingleContent} exact />
+            <Route path="/search" component={Search} />
+            <Route path='/platform' component={Platform} />
+            <Route path='/publisher' component={Publisher} />
+            <Route path='/profile' component={Profile} />
+            <Route path='/user/:uid' component={UserProfile} />
+            <Route path='/singletype/:id/:type/:name' component={SingleType} />
+            <Route path='/users' component={Users} />
+          </Switch>
         </div>
       </BrowserRouter>
     </LoadingScreen>

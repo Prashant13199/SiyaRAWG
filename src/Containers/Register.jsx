@@ -34,9 +34,6 @@ export default function Register() {
                 timestamp: Date.now(),
             }).then(() => {
                 setLoading(false);
-                localStorage.setItem('uid', user.user.uid)
-                localStorage.setItem('username', email.replace("@gmail.com", ""))
-                window.location.reload()
             }).catch((e) => {
                 setLoading(false);
                 setError(e.toString())
@@ -101,7 +98,7 @@ export default function Register() {
                     </div>
                     <div className="d-grid gap-2" style={{ marginTop: "20px" }}>
                         <Button
-                            variant="info"
+                            variant="success"
                             size="md"
                             id="uploadBtn"
                             onClick={() => register()}
