@@ -35,12 +35,12 @@ export default function NavBarMain() {
     <>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Body style={{ backgroundColor: theme.palette.background.default }}>
-          <Login />
+          <Login handleClose={handleClose} />
         </Modal.Body>
       </Modal>
       <Modal show={show2} onHide={handleClose2} centered>
         <Modal.Body style={{ backgroundColor: theme.palette.background.default }}>
-          <Register />
+          <Register handleClose2={handleClose2} />
         </Modal.Body>
       </Modal>
       <Navbar className='navbar'>
@@ -69,21 +69,6 @@ export default function NavBarMain() {
           </Nav>
         }
       </Navbar>
-      {/* <Navbar bg='dark' variant='dark' fixed='bottom' style={{ height: '50px', padding: '0px 2px' }}>
-        <Nav className="me-auto pc"></Nav>
-        <Nav><NavLink to='/' activeClassName="is-active" className="navlink"
-          exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.success.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><GamesIcon /></div><div>Games</div></div></NavLink></Nav>
-        <Nav className="me-auto"></Nav>
-        <Nav><NavLink to='/platform' activeClassName="is-active" className="navlink"
-          exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.success.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><MovieIcon /></div><div>Platforms</div></div></NavLink></Nav>
-        <Nav className="me-auto"></Nav>
-        <Nav><NavLink to='/publisher' activeClassName="is-active" className="navlink"
-          exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.success.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><PublishIcon /></div><div>Publishers</div></div></NavLink></Nav>
-        {auth?.currentUser?.uid && <><Nav className="me-auto"></Nav>
-          <Nav><NavLink to='/users' activeClassName="is-active" className="navlink"
-            exact={true} style={{ textDecoration: 'none', color: theme.palette.text.primary }} activeStyle={{ color: theme.palette.success.main }}><div style={{ display: 'grid', placeItems: 'center' }}><div><PeopleIcon /></div><div>Users</div></div></NavLink></Nav></>}
-        <Nav className="me-auto pc"></Nav>
-      </Navbar> */}
     </>
   )
 }

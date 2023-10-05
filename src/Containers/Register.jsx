@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import { database, auth } from "../firebase";
 import GoogleSignin from "../Components/GoogleSignIn";
 
-export default function Register() {
+export default function Register({ handleClose2 }) {
 
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
@@ -34,6 +34,7 @@ export default function Register() {
                 timestamp: Date.now(),
             }).then(() => {
                 setLoading(false);
+                handleClose2()
             }).catch((e) => {
                 setLoading(false);
                 setError(e.toString())
@@ -106,7 +107,7 @@ export default function Register() {
                             {loading ? "Please Wait.." : "Register"}
                         </Button>
                     </div>
-                    <GoogleSignin />
+                    <GoogleSignin close={handleClose2} />
                 </div>
             </div>
         </>

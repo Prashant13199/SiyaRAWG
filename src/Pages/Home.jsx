@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import SingleGameTile from '../Components/SingleGameTile'
 import '../index.css'
-import { IconButton } from '@mui/material'
+import { Button, CircularProgress, IconButton } from '@mui/material'
 import { Modal } from 'react-bootstrap';
 import { useTheme } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,6 +14,7 @@ export default function Home() {
     const [platforms, setPlatforms] = useState([])
     const [publishers, setPublishers] = useState([])
     const [genres, setGenres] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const theme = useTheme()
 
@@ -27,6 +28,7 @@ export default function Home() {
     const [genre, setGenre] = useState('')
 
     useEffect(() => {
+        setLoading(true)
         fetchGames()
         fetchPlatforms()
         fetchPublishers()
@@ -49,16 +51,28 @@ export default function Home() {
     const fetchGames = () => {
         if (type === 'Trending') {
             fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&ordering=-rating&${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}`)
-                .then(res => res.json()).then((data) => setContent(data.results)).catch((e) => console.log(e))
+                .then(res => res.json()).then((data) => {
+                    setContent(data.results)
+                    setLoading(false)
+                }).catch((e) => console.log(e))
         } else if (type === 'Upcoming') {
             fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&dates=${currentDate},${nextYear}&ordering=-added${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}`)
-                .then(res => res.json()).then((data) => setContent(data.results)).catch((e) => console.log(e))
+                .then(res => res.json()).then((data) => {
+                    setContent(data.results)
+                    setLoading(false)
+                }).catch((e) => console.log(e))
         } else if (type === 'Popular') {
             fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&dates=${lastYear},${currentDate}&ordering=-rating${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}`)
-                .then(res => res.json()).then((data) => setContent(data.results)).catch((e) => console.log(e))
+                .then(res => res.json()).then((data) => {
+                    setContent(data.results)
+                    setLoading(false)
+                }).catch((e) => console.log(e))
         } else if (type === 'New') {
             fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&dates=${lastYear},${currentDate}&ordering=-released${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}`)
-                .then(res => res.json()).then((data) => setContent(data.results)).catch((e) => console.log(e))
+                .then(res => res.json()).then((data) => {
+                    setContent(data.results)
+                    setLoading(false)
+                }).catch((e) => console.log(e))
         }
 
     }
@@ -99,6 +113,14 @@ export default function Home() {
     const lastYear = `${currentYear - 1}-${currentMonth}-${currentDay}`;
     const nextYear = `${currentYear + 1}-${currentMonth}-${currentDay}`;
 
+    const handleReset = () => {
+        setType('Trending')
+        setGenre('')
+        setPlatform('')
+        setPublisher('')
+        handleClose()
+    }
+
     return (
         <>
 
@@ -108,26 +130,26 @@ export default function Home() {
                     <div className='modal_content'>
                         <h1>Filters</h1>
                         <br />
-                        <div className='modal_dropdowns'>
-                            <select onChange={(e) => setType(e.target.value)} className='select'>
+                        <div className='modal_dropdowns' >
+                            <select onChange={(e) => setType(e.target.value)} className='select' defaultValue={type}>
                                 <option value={'Trending'}>Trending</option>
                                 <option value={'Upcoming'}>Upcoming</option>
                                 <option value={'Popular'}>Popular</option>
                                 <option value={'New'}>New</option>
                             </select>
-                            <select onChange={(e) => setPlatform(e.target.value)} className='select'>
+                            <select onChange={(e) => setPlatform(e.target.value)} className='select' defaultValue={platform}>
                                 <option value={''}>Select Platform</option>
                                 {platforms?.map((platform) => {
                                     return <option value={platform.id}>{platform.name}</option>
                                 })}
                             </select>
-                            <select onChange={(e) => setPublisher(e.target.value)} className='select'>
+                            <select onChange={(e) => setPublisher(e.target.value)} className='select' defaultValue={publisher}>
                                 <option value={''}>Select Publisher</option>
                                 {publishers?.map((publisher) => {
                                     return <option value={publisher.id}>{publisher.name}</option>
                                 })}
                             </select>
-                            <select onChange={(e) => setGenre(e.target.value)} className='select'>
+                            <select onChange={(e) => setGenre(e.target.value)} className='select' defaultValue={genre}>
                                 <option value={''}>Select Genre</option>
                                 {genres?.map((genre) => {
                                     return <option value={genre.id}>{genre.name}</option>
@@ -135,20 +157,19 @@ export default function Home() {
                             </select>
                         </div>
                     </div>
+                    <Button variant='contained' color="success" onClick={() => handleReset()}>Reset</Button>
                 </Modal.Body>
             </Modal>
             <div>
                 <div className='page_header_text'>{type} <IconButton onClick={() => handleShow()}><FilterAltIcon fontSize='large' /></IconButton></div>
                 <br />
-                {content.length !== 0 &&
-                    <div className='home_grid'>
-                        {content.map((data) => {
-                            return <SingleGameTile data={data} key={data.id} />
-                        })}
-                    </div>
-                }
+                {!loading ? <div className='home_grid'>
+                    {content?.map((data) => {
+                        return <SingleGameTile data={data} key={data.id} />
+                    })}
+                </div> : <div className='loading'><CircularProgress color='success' /></div>}
             </div>
-            {content.length === 0 && <center><br />
+            {content?.length === 0 && !loading && <center><br />
                 <img src={empty} width={'100px'} height={'auto'} />
                 <h6>Nothing to show</h6></center>}
         </>

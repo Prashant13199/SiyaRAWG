@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { database } from "../firebase";
 import googlelogo from "../Assets/googlelogo.png";
 
-export default function GoogleSignin() {
+export default function GoogleSignin({ close }) {
 
   const [loading, setLoading] = useState(false);
   const avatarArray = ['Willow', 'Spooky', 'Bubba', 'Lily', 'Whiskers', 'Pepper', 'Tiger', 'Zoey', 'Dusty', 'Simba']
@@ -27,6 +27,7 @@ export default function GoogleSignin() {
             timestamp: Date.now(),
           }).then(() => {
             setLoading(false);
+            close()
           }).catch((e) => {
             console.log(e);
           });

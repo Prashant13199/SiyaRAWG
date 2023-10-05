@@ -13,7 +13,7 @@ import ForgotPassword from "./ForgotPassword";
 import GoogleSignin from "../Components/GoogleSignIn";
 import { useTheme } from '@mui/material/styles';
 
-export default function Login() {
+export default function Login({ handleClose }) {
 
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
@@ -33,6 +33,7 @@ export default function Login() {
         setLoading(true);
         const user = await auth.signInWithEmailAndPassword(email, password).then((user) => {
             setLoading(false);
+            handleClose()
         })
             .catch((e) => {
                 console.log(e);
@@ -46,7 +47,7 @@ export default function Login() {
         <>
             <Modal show={show2} onHide={handleClose2} centered>
                 <Modal.Body style={{ backgroundColor: theme.palette.background.default }}>
-                    <ForgotPassword />
+                    <ForgotPassword handleClose2={handleClose2} />
                 </Modal.Body>
             </Modal>
             {show && <Alert variant="danger" onClose={() => {
@@ -112,7 +113,7 @@ export default function Login() {
                     <div className="d-grid gap-2" style={{ marginTop: "10px", cursor: 'pointer' }}>
                         <a href="#" onClick={() => handleShow2()} style={{ textDecoration: 'none', color: theme.palette.success.main }}>Forgot Password?</a>
                     </div>
-                    <GoogleSignin />
+                    <GoogleSignin close={handleClose} />
                 </div>
             </div>
         </>
