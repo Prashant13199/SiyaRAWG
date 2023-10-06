@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import empty from '../Assets/empty.png'
 
-export default function Home() {
+export default function Home({ setBackground }) {
 
     const [content, setContent] = useState([])
     const [platforms, setPlatforms] = useState([])
@@ -28,6 +28,7 @@ export default function Home() {
     const [genre, setGenre] = useState('')
 
     useEffect(() => {
+        setBackground('')
         setLoading(true)
         fetchGames()
         fetchPlatforms()
@@ -160,18 +161,17 @@ export default function Home() {
                     <Button variant='contained' color="success" onClick={() => handleReset()}>Reset</Button>
                 </Modal.Body>
             </Modal>
-            <div>
-                <div className='page_header_text'>{type} <IconButton onClick={() => handleShow()}><FilterAltIcon fontSize='large' /></IconButton></div>
-                <br />
+            <div className='Home'>
+                <div className='page_header_text'>{type} <IconButton onClick={() => handleShow()}><FilterAltIcon className='filter_icon' /></IconButton></div>
                 {!loading ? <div className='home_grid'>
                     {content?.map((data) => {
                         return <SingleGameTile data={data} key={data.id} />
                     })}
                 </div> : <div className='loading'><CircularProgress color='success' /></div>}
+                {content?.length === 0 && !loading && <center><br />
+                    <img src={empty} width={'100px'} height={'auto'} />
+                    <h6>Nothing to show</h6></center>}
             </div>
-            {content?.length === 0 && !loading && <center><br />
-                <img src={empty} width={'100px'} height={'auto'} />
-                <h6>Nothing to show</h6></center>}
         </>
     )
 }

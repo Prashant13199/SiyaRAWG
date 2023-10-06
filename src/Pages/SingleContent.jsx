@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { IconButton } from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddIcon from '@mui/icons-material/Add';
 import DoneIcon from '@mui/icons-material/Done';
@@ -8,7 +8,6 @@ import Tooltip from '@mui/material/Tooltip';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import StarIcon from '@mui/icons-material/Star';
-import Grow from '@mui/material/Grow';
 import SendIcon from '@mui/icons-material/Send';
 import { useTheme } from '@mui/material';
 import FeaturedVideoIcon from '@mui/icons-material/FeaturedVideo';
@@ -28,13 +27,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-export default function SingleContent() {
+export default function SingleContent({ setBackground, scrollTop }) {
 
     const { id } = useParams()
     const theme = useTheme()
 
     const [readMore, setReadMore] = useState(false)
-    const [checked, setChecked] = useState(false);
     const [users, setUsers] = useState([])
     const [game, setGame] = useState('')
     const [snackBar, setSnackBar] = useState(false)
@@ -46,6 +44,7 @@ export default function SingleContent() {
     const [similar, setSimilar] = useState([])
     const [currentusername, setCurrentusername] = useState('')
     const [name, setName] = useState('')
+    const [loading, setLoading] = useState(true)
 
     const [show2, setShow2] = useState(false);
     const handleClose2 = () => setShow2(false);
@@ -53,7 +52,8 @@ export default function SingleContent() {
 
     useEffect(() => {
 
-        setChecked(true)
+        fetchGame()
+        scrollTop()
 
         database.ref(`/Users/${auth?.currentUser?.uid}`).on('value', snapshot => {
             setCurrentusername(snapshot.val()?.username)
@@ -105,7 +105,10 @@ export default function SingleContent() {
 
     const fetchGame = () => {
         fetch(`https://api.rawg.io/api/games/${id}?key=${process.env.REACT_APP_API_KEY}`)
-            .then(res => res.json()).then((game) => setGame(game)).catch((e) => console.log(e))
+            .then(res => res.json()).then((game) => {
+                setGame(game)
+                setLoading(false)
+            }).catch((e) => console.log(e))
 
         fetch(`https://api.rawg.io/api/games/${id}/screenshots?key=${process.env.REACT_APP_API_KEY}`)
             .then(res => res.json()).then((photo) => {
@@ -119,9 +122,8 @@ export default function SingleContent() {
     }
 
     useEffect(() => {
-        window.scrollTo(0, 0)
-        fetchGame()
-    }, [id])
+        setBackground(game?.background_image)
+    }, [game])
 
     const handleFavourite = () => {
         if (!favourite) {
@@ -232,97 +234,99 @@ export default function SingleContent() {
             } severity="success" sx={{ width: '100%' }}>
                     Suggested to {name && name.length > 12 ? name.substring(0, 12).concat('...') : name}!
                 </Alert></Snackbar>
-            <div>
-                <div className='page_header_text'>{game?.name}</div>
-                <div className='singlecontent_responsive'>
-                    <div className='details'>
-                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {(game.release_date || game.first_air_date) && <>{game.release_date || game.first_air_date}{(game.release_date || game.first_air_date) && game.runtime && <>&nbsp;&#183;&nbsp;</>}</>}{game.runtime && game.runtime !== 0 && <>{Math.ceil(game.runtime / 60)}h</>}
-                        </div>
-                        {game.released && <div className='overview released'>
-                            {game?.released}
-                        </div>}
-                        <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px 0px' }}>
-                            {game.genres && game.genres.map((g) => { return <div key={g.id} className='genrelist'>{g.name}</div> })}
-                        </div>
-                        <div className='single_game_scroll_platforms'>
-                            {game.parent_platforms?.map((p, index) => {
-                                return <img key={index} className='platform_icon_large' src={p.platform.name === 'PC' && pc || p.platform.name === 'PlayStation' && ps || p.platform.name === 'PC' && pc || p.platform.name === 'Xbox' && xbox || p.platform.name === "Nintendo" && nintendo || p.platform.name === "Apple Macintosh" && apple || p.platform.name === "Android" && android || p.platform.name === "Linux" && linux} />
-                            })}
-                        </div>
-                        {game.vote_average !== 0 && <div className='overview'>
-                            <StarIcon style={{ color: "#FFD700" }} /> {game.rating?.toFixed(2)}<span style={{ fontSize: 'small', opacity: 0.6 }}>/5</span>
-                        </div>}
-
-                        <div className='actions'>
-                            {auth?.currentUser?.uid && <div style={{ marginRight: '20px' }}>
-                                <Tooltip title="Favourite">
-                                    <IconButton style={{ backgroundColor: theme.palette.success.main }} onClick={() => handleFavourite()}>
-                                        {favourite ? <FavoriteIcon style={{ color: 'red' }} /> : <FavoriteIcon style={{ color: 'white' }} />}
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Library">
-                                    <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} onClick={() => handleLibrary()}>
-                                        {library ? <DoneIcon style={{ color: 'white' }} /> : <AddIcon style={{ color: 'white' }} />}
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Playing">
-                                    <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} onClick={() => handlePlaying()}>
-                                        {playing ? <PlayCircleFilledWhiteIcon style={{ color: 'white' }} /> : <PlayCircleOutlineIcon style={{ color: 'white' }} />}
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Played">
-                                    <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} onClick={() => handlePlayed()}>
-                                        {played ? <FeaturedVideoIcon style={{ color: 'white' }} /> : <FeaturedVideoOutlinedIcon style={{ color: 'white' }} />}
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Share" onClick={() => handleShow2()}>
-                                    <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} >
-                                        <SendIcon style={{ color: 'white' }} />
-                                    </IconButton>
-                                </Tooltip>
+            <div className='Home'>
+                {!loading ? <>
+                    <div className='page_header_text'>{game?.name}</div>
+                    <div className='singlecontent_responsive'>
+                        <div className='details'>
+                            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                {(game.release_date || game.first_air_date) && <>{game.release_date || game.first_air_date}{(game.release_date || game.first_air_date) && game.runtime && <>&nbsp;&#183;&nbsp;</>}</>}{game.runtime && game.runtime !== 0 && <>{Math.ceil(game.runtime / 60)}h</>}
+                            </div>
+                            {game.released && <div className='overview released'>
+                                {game?.released}
                             </div>}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px 0px' }}>
+                                {game.genres && game.genres.map((g) => { return <div key={g.id} className='genrelist'>{g.name}</div> })}
+                            </div>
+                            <div className='single_game_scroll_platforms'>
+                                {game.parent_platforms?.map((p, index) => {
+                                    return <img key={index} className='platform_icon_large' src={p.platform.name === 'PC' && pc || p.platform.name === 'PlayStation' && ps || p.platform.name === 'PC' && pc || p.platform.name === 'Xbox' && xbox || p.platform.name === "Nintendo" && nintendo || p.platform.name === "Apple Macintosh" && apple || p.platform.name === "Android" && android || p.platform.name === "Linux" && linux} />
+                                })}
+                            </div>
+                            {game.vote_average !== 0 && <div className='overview'>
+                                <StarIcon style={{ color: "#FFD700" }} /> {game.rating?.toFixed(2)}<span style={{ fontSize: 'small', opacity: 0.6 }}>/5</span>
+                            </div>}
+
+                            <div className='actions'>
+                                {auth?.currentUser?.uid && <div style={{ marginRight: '20px' }}>
+                                    <Tooltip title="Favourite">
+                                        <IconButton style={{ backgroundColor: theme.palette.success.main }} onClick={() => handleFavourite()}>
+                                            {favourite ? <FavoriteIcon style={{ color: 'red' }} /> : <FavoriteIcon style={{ color: 'white' }} />}
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Library">
+                                        <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} onClick={() => handleLibrary()}>
+                                            {library ? <DoneIcon style={{ color: 'white' }} /> : <AddIcon style={{ color: 'white' }} />}
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Playing">
+                                        <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} onClick={() => handlePlaying()}>
+                                            {playing ? <PlayCircleFilledWhiteIcon style={{ color: 'white' }} /> : <PlayCircleOutlineIcon style={{ color: 'white' }} />}
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Played">
+                                        <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} onClick={() => handlePlayed()}>
+                                            {played ? <FeaturedVideoIcon style={{ color: 'white' }} /> : <FeaturedVideoOutlinedIcon style={{ color: 'white' }} />}
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Share" onClick={() => handleShow2()}>
+                                        <IconButton style={{ backgroundColor: theme.palette.success.main, marginLeft: '10px' }} >
+                                            <SendIcon style={{ color: 'white' }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>}
+                            </div>
+
+                            {game?.publishers?.length !== 0 && <div className='overview'>
+                                <h4>Publishers</h4>
+                                <ul>
+                                    {game.publishers?.map((pub) => {
+                                        return <li key={pub.id}>{pub.name}</li>
+                                    })}
+                                </ul>
+                            </div>}
+
+                            {game?.developers?.length !== 0 && <div className='overview'>
+                                <h4>Developers</h4>
+                                <ul>
+                                    {game.developers?.map((dev) => {
+                                        return <li key={dev.id}>{dev.name}</li>
+                                    })}
+                                </ul>
+                            </div>}
+                            {game.description_raw && <div className='overview'>
+                                <h4>Overview</h4>
+                                {game.description_raw?.length > 200 && !readMore ? game.description_raw.substring(0, 200).concat('...') : game.description_raw}
+                                <span className='readmore' style={{ color: theme.palette.success.main }} onClick={() => setReadMore(!readMore)}>{game.description_raw && game.description_raw?.length > 200 && (!readMore ? 'read more.' : 'Less')}</span>
+                            </div>}
+
                         </div>
-
-                        {game?.publishers?.length !== 0 && <div className='overview'>
-                            <h4>Publishers</h4>
-                            <ul>
-                                {game.publishers?.map((pub) => {
-                                    return <li key={pub.id}>{pub.name}</li>
-                                })}
-                            </ul>
-                        </div>}
-
-                        {game?.developers?.length !== 0 && <div className='overview'>
-                            <h4>Developers</h4>
-                            <ul>
-                                {game.developers?.map((dev) => {
-                                    return <li key={dev.id}>{dev.name}</li>
-                                })}
-                            </ul>
-                        </div>}
-                        {game.description_raw && <div className='overview'>
-                            <h4>Overview</h4>
-                            {game.description_raw?.length > 200 && !readMore ? game.description_raw.substring(0, 200).concat('...') : game.description_raw}
-                            <span className='readmore' style={{ color: theme.palette.success.main }} onClick={() => setReadMore(!readMore)}>{game.description_raw && game.description_raw?.length > 200 && (!readMore ? 'read more.' : 'Less')}</span>
-                        </div>}
-
                     </div>
-                </div>
-                <br />
-                {similar?.length !== 0 && <>
-                    <div className='trending_title'>Similar</div>
-                    <div className='trending_scroll'>
-                        {similar.map((data) => {
-                            return <SingleGameTile data={data} key={data.id} />
-                        })}
-                    </div><br /></>}
-                {screenshots?.length !== 0 && <><div className='trending_title'>Screenshots</div>
-                    <div className='screenshots'>
-                        {screenshots?.map((pic, index) => {
-                            return <img key={index} className='screenshot' src={pic.image} />
-                        })}
-                    </div></>}
+                    <br />
+                    {similar?.length !== 0 && <>
+                        <div className='trending_title'>Similar</div>
+                        <div className='trending_scroll'>
+                            {similar.map((data) => {
+                                return <SingleGameTile data={data} key={data.id} />
+                            })}
+                        </div><br /></>}
+                    {screenshots?.length !== 0 && <><div className='trending_title'>Screenshots</div>
+                        <div className='screenshots'>
+                            {screenshots?.map((pic, index) => {
+                                return <img key={index} className='screenshot' src={pic.image} />
+                            })}
+                        </div></>}
+                </> : <div className='loading'><CircularProgress color="success" /></div>}
             </div>
         </>
     )

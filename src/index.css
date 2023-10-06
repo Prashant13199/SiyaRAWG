@@ -4,16 +4,44 @@
 
 .App {
   overflow-x: hidden;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 0;
   color: white;
-  padding: 40px;
+}
+
+.Profile,
+.Home {
+  padding-top: 80px;
+}
+
+.backdrop_opacity {
+  background-color: rgba(0, 0, 0, 0.75);
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+}
+
+.navbar_back_image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0));
+  transition: all .6s;
+}
+
+.navbar_back {
+  background-color: rgb(18, 18, 18);
+  transition: all .6s;
+}
+
+.content {
+  padding-bottom: 20px !important;
+  padding: 5px;
 }
 
 .modal_content {
   padding: 20px;
-}
-
-.navbar-brand {
-  cursor: pointer !important;
 }
 
 .modal_dropdowns {
@@ -35,17 +63,15 @@
 }
 
 .page_header_text {
-  font-size: 70px;
+  font-size: 60px;
   font-weight: bolder;
+  margin-left: 10px;
 }
 
 .logo {
   height: auto;
-  width: 200px;
-}
-
-.navbar {
-  background-color: rgb(21, 21, 21);
+  width: 160px;
+  cursor: pointer;
 }
 
 ::-webkit-scrollbar {
@@ -163,29 +189,7 @@
 
 .trending_title {
   font-weight: bold;
-  font-size: 28px;
-}
-
-.welcome_backdrop {
-  background-color: rgba(0, 0, 0, 0.4);
-  height: 60vh;
-  display: flex;
-  align-items: flex-end;
-  padding: 20px;
-  color: white;
-  border-radius: 10px;
-}
-
-.welcomeText {
-  font-size: 40px;
-}
-
-.welcomeDesc {
-  font-size: 20px;
-}
-
-.welcome {
-  cursor: pointer;
+  font-size: 24px;
 }
 
 .readmore {
@@ -281,27 +285,10 @@
   color: white;
 }
 
-.singlecontentposter {
-  height: 300px;
-  width: 100%;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-.backdrop_opacity {
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 10px;
-}
-
 .searchresultfor {
   margin: 0px 10px;
   font-size: 14px;
   color: lightgray;
-}
-
-.singlecontent_responsive {
-  display: flex;
-  color: white;
 }
 
 .profile_header {
@@ -376,10 +363,6 @@
 
 .pc {
   display: block;
-}
-
-.watchprovider {
-  margin-left: 20px;
 }
 
 .genrelist {
@@ -487,7 +470,21 @@
   display: none;
 }
 
+.filter_icon {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.details {
+  padding: 10px;
+}
+
 @media only screen and (max-width: 600px) {
+
+  .filter_icon {
+    width: 30px !important;
+    height: 30px !important;
+  }
 
   .trending_title {
     font-size: 20px;
@@ -511,15 +508,11 @@
   }
 
   .page_header_text {
-    font-size: 35px;
+    font-size: 30px;
   }
 
   .logo {
     width: 130px;
-  }
-
-  .App {
-    padding: 10px;
   }
 
   .user_username {
@@ -556,29 +549,13 @@
   }
 
   .platform_icon_small {
-    height: 18px;
+    height: 16px;
     width: auto;
     margin: 2px;
   }
 
   .single_game_tile_title {
-    font-size: 18px;
-  }
-
-  .welcome {
-    height: 30vh;
-  }
-
-  .welcome_backdrop {
-    height: 30vh;
-  }
-
-  .welcomeText {
-    font-size: 30px;
-  }
-
-  .welcomeDesc {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .navbar_icon {
@@ -587,13 +564,13 @@
   }
 
   .navbar__img {
-    height: 30px;
-    width: 30px;
+    height: 35px;
+    width: 35px;
   }
 
   .navbar__img_active {
-    height: 30px;
-    width: 30px;
+    height: 35px;
+    width: 35px;
   }
 
   .discover_movies_title {
@@ -603,23 +580,8 @@
 
 @media only screen and (max-width: 880px) {
 
-  .singlecontent_responsive {
-    display: grid;
-    padding: 0;
-  }
-
   .actions {
     display: grid;
-  }
-
-  .watchprovider {
-    margin-top: 20px;
-    margin-left: 0;
-  }
-
-  .singlecontentposter_responsive {
-    display: grid;
-    place-items: center;
   }
 
   .details {

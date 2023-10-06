@@ -13,7 +13,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useTheme } from '@mui/material/styles';
 import '../index.css'
 
-export default function NavBarMain() {
+export default function NavBarMain({ top }) {
 
   const [currentPhoto, setCurrentPhoto] = useState("")
   const [show, setShow] = useState(false);
@@ -43,7 +43,7 @@ export default function NavBarMain() {
           <Register handleClose2={handleClose2} />
         </Modal.Body>
       </Modal>
-      <Navbar className='navbar'>
+      <Navbar className={top < 50 ? 'navbar navbar_back_image' : 'navbar navbar_back'} variant={theme.palette.mode} fixed='top'>
         <Navbar.Brand>
           <NavLink to="/">
             <img src={logo} className='logo' alt="logo" />

@@ -11,7 +11,7 @@ import { useTheme } from '@mui/material';
 import CachedIcon from '@mui/icons-material/Cached';
 import SingleGameTile from '../Components/SingleGameTile';
 
-export default function Profile() {
+export default function Profile({ setBackground }) {
 
   const [currentUsername, setCurrentUsername] = useState('')
   const [currentPhoto, setCurrentPhoto] = useState('')
@@ -31,6 +31,7 @@ export default function Profile() {
 
   useEffect(() => {
     fetchRecommendation();
+    setBackground(favourite[number]?.game?.background_image)
   }, [number])
 
   useEffect(() => {
@@ -48,10 +49,8 @@ export default function Profile() {
   }
 
   const fetchRecommendation = async () => {
-    if (favourite[number]?.game?.publishers?.length !== 0) {
-      fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&publishers=${favourite[number]?.game?.publishers[0]?.id}&page_size=1000`)
-        .then(res => res.json()).then((data) => setRecommendation(data.results)).catch((e) => console.log(e))
-    }
+    fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&publishers=${favourite[number]?.game?.publishers[0]?.id}`)
+      .then(res => res.json()).then((data) => setRecommendation(data.results)).catch((e) => console.log(e))
   };
 
   useEffect(() => {
@@ -59,9 +58,6 @@ export default function Profile() {
       setCurrentPhoto(snapshot.val()?.photo)
       setCurrentUsername(snapshot.val()?.username)
     })
-  }, [])
-
-  useEffect(() => {
     database.ref(`/Users/${auth?.currentUser?.uid}/library`).on('value', snapshot => {
       let arr = []
       snapshot?.forEach((snap) => {
@@ -69,9 +65,6 @@ export default function Profile() {
       })
       setLibrary(arr)
     })
-  }, [])
-
-  useEffect(() => {
     database.ref(`/Users/${auth?.currentUser?.uid}/played`).on('value', snapshot => {
       let arr = []
       snapshot?.forEach((snap) => {
@@ -79,9 +72,6 @@ export default function Profile() {
       })
       setPlayed(arr)
     })
-  }, [])
-
-  useEffect(() => {
     database.ref(`/Users/${auth?.currentUser?.uid}/favourites`).on('value', snapshot => {
       let arr = []
       snapshot?.forEach((snap) => {
@@ -89,9 +79,6 @@ export default function Profile() {
       })
       setFavourite(arr)
     })
-  }, [])
-
-  useEffect(() => {
     database.ref(`/Pictures/`).on('value', snapshot => {
       let arr = []
       snapshot?.forEach((snap) => {
@@ -99,9 +86,6 @@ export default function Profile() {
       })
       setPictures(arr)
     })
-  }, [])
-
-  useEffect(() => {
     database.ref(`/Users/${auth?.currentUser?.uid}/playing`).on('value', snapshot => {
       let arr = []
       snapshot?.forEach((snap) => {
@@ -109,10 +93,6 @@ export default function Profile() {
       })
       setPlaying(arr)
     })
-  }, [])
-
-
-  useEffect(() => {
     database.ref(`/Users/${auth?.currentUser?.uid}/suggestions`).on('value', snapshot => {
       let arr = []
       snapshot?.forEach((snap) => {
@@ -120,7 +100,7 @@ export default function Profile() {
       })
       setSuggestions(arr)
     })
-  }, [])
+  }, [auth?.currentUser?.uid])
 
   const handleChangePicture = (photo) => {
     database.ref(`/Users/${auth?.currentUser?.uid}`).update({
@@ -201,8 +181,7 @@ export default function Profile() {
           </div></>}
         {favourite.length === 0 && library.length === 0 && playing.length === 0 && played.length === 0 && <center><br />
           <img src={empty} width={'100px'} height={'auto'} />
-          <h6 style={{ color: 'gray' }}>Nothing to show</h6>
-          <h3>Add to Watchlist or Favourite to appear here</h3></center>}
+          <h6 style={{ color: 'gray' }}>Nothing to show</h6></center>}
       </div>
 
     </>

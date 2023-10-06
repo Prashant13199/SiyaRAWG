@@ -5,10 +5,14 @@ import InputBase from '@mui/material/InputBase';
 import empty from '../Assets/empty.png'
 import SingleGameTile from '../Components/SingleGameTile';
 
-export default function Search() {
+export default function Search({ setBackground }) {
 
     const [content, setContent] = useState([]);
     const [query, setQuery] = useState("")
+
+    useEffect(() => {
+        setBackground('')
+    }, [])
 
     const fetchSearch = () => {
         fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&search=${query}`)
@@ -21,7 +25,7 @@ export default function Search() {
     }, [query])
 
     return (
-        <>
+        <div className='Profile'>
             <div className='page_header_text'>Search</div>
             <Paper component="form" sx={{ p: '4px 4px', display: 'flex', alignItems: 'center', width: '98%', borderRadius: '20px', margin: 'auto' }}>
                 <InputBase
@@ -47,6 +51,6 @@ export default function Search() {
             {content?.length === 0 && query && <center>
                 <img src={empty} width={'100px'} height={'auto'} />
                 <h6>Oops... no games found</h6></center>}
-        </>
+        </div>
     )
 }

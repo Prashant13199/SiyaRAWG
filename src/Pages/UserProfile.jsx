@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import empty from '../Assets/empty.png'
 import SingleGameTile from '../Components/SingleGameTile';
 
-export default function UserProfile() {
+export default function UserProfile({ setBackground }) {
 
     const { uid } = useParams()
     const [username, setUsername] = useState('')
@@ -15,6 +15,10 @@ export default function UserProfile() {
     const [favourite, setFavourite] = useState([])
     const [playing, setPlaying] = useState([])
     const [suggestions, setSuggestions] = useState([])
+
+    useEffect(() => {
+        setBackground(favourite[Math.floor(Math.random() * favourite.length)]?.game?.background_image)
+    }, [favourite])
 
     useEffect(() => {
         database.ref(`/Users/${uid}`).on('value', snapshot => {
@@ -51,7 +55,6 @@ export default function UserProfile() {
             })
             setFavourite(arr)
         })
-
     }, [])
 
     useEffect(() => {

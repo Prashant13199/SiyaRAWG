@@ -28,7 +28,7 @@ export default function Users() {
     }
 
     return (
-        <>
+        <div className='Home'>
             <div className='page_header_text'>Users</div>
             {!loading ? <div className='people'>
                 <Grid container spacing={{ xs: 1, md: 1 }} columns={{ xs: 4, sm: 12, md: 20 }}>
@@ -40,6 +40,6 @@ export default function Users() {
                 : <div className="loading">
                     <CircularProgress color='success' />
                 </div>}
-        </>
+        </div>
     )
 }
