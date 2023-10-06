@@ -7,14 +7,18 @@ import { useTheme } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import empty from '../Assets/empty.png'
+import CustomPagination from '../Components/CustomPagination';
 
-export default function Home({ setBackground }) {
+export default function Home({ setBackground, scrollTop }) {
 
     const [content, setContent] = useState([])
     const [platforms, setPlatforms] = useState([])
     const [publishers, setPublishers] = useState([])
     const [genres, setGenres] = useState([])
     const [loading, setLoading] = useState(true)
+
+    const [page, setPage] = useState(1)
+    const [numOfPages, setNumOfPages] = useState();
 
     const theme = useTheme()
 
@@ -37,8 +41,17 @@ export default function Home({ setBackground }) {
     }, [])
 
     useEffect(() => {
+        setNumOfPages(0)
+        setLoading(true)
         fetchGames()
+        scrollTop()
     }, [type, platform, publisher, genre])
+
+    useEffect(() => {
+        setLoading(true)
+        fetchGames()
+        scrollTop()
+    }, [page])
 
     const getCurrentMonth = function () {
         const month = new Date().getMonth() + 1;
@@ -51,28 +64,32 @@ export default function Home({ setBackground }) {
 
     const fetchGames = () => {
         if (type === 'Trending') {
-            fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&ordering=-rating&${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}`)
+            fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&ordering=-rating&${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}&page=${page}`)
                 .then(res => res.json()).then((data) => {
                     setContent(data.results)
                     setLoading(false)
+                    setNumOfPages(Math.floor(data?.count / data.results?.length))
                 }).catch((e) => console.log(e))
         } else if (type === 'Upcoming') {
-            fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&dates=${currentDate},${nextYear}&ordering=-added${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}`)
+            fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&dates=${currentDate},${nextYear}&ordering=-added${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}&page=${page}`)
                 .then(res => res.json()).then((data) => {
                     setContent(data.results)
                     setLoading(false)
+                    setNumOfPages(Math.floor(data?.count / data.results?.length))
                 }).catch((e) => console.log(e))
         } else if (type === 'Popular') {
-            fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&dates=${lastYear},${currentDate}&ordering=-rating${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}`)
+            fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&dates=${lastYear},${currentDate}&ordering=-rating${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}&page=${page}`)
                 .then(res => res.json()).then((data) => {
                     setContent(data.results)
                     setLoading(false)
+                    setNumOfPages(Math.floor(data?.count / data.results?.length))
                 }).catch((e) => console.log(e))
         } else if (type === 'New') {
-            fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&dates=${lastYear},${currentDate}&ordering=-released${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}`)
+            fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&dates=${lastYear},${currentDate}&ordering=-released${publisher && `publishers=${publisher}`}&${platform && `platforms=${platform}`}&${genre && `genres=${genre}`}&page=${page}`)
                 .then(res => res.json()).then((data) => {
                     setContent(data.results)
                     setLoading(false)
+                    setNumOfPages(Math.floor(data?.count / data.results?.length))
                 }).catch((e) => console.log(e))
         }
 
@@ -168,6 +185,9 @@ export default function Home({ setBackground }) {
                         return <SingleGameTile data={data} key={data.id} />
                     })}
                 </div> : <div className='loading'><CircularProgress color='success' /></div>}
+                {numOfPages > 1 && (
+                    <CustomPagination setPage={setPage} numOfPages={numOfPages} />
+                )}
                 {content?.length === 0 && !loading && <center><br />
                     <img src={empty} width={'100px'} height={'auto'} />
                     <h6>Nothing to show</h6></center>}

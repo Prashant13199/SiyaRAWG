@@ -57,7 +57,7 @@ function App() {
               <NavBarMain top={top} />
               <Switch>
                 <Route path="/" exact>
-                  <Home setBackground={setBackground} />
+                  <Home setBackground={setBackground} scrollTop={scrollTop} />
                 </Route>
                 <Route path="/game/:id" exact>
                   <SingleContent setBackground={setBackground} scrollTop={scrollTop} />
