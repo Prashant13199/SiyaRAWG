@@ -52,7 +52,7 @@ function App() {
     >
       <BrowserRouter>
         <div className="App" style={{ backgroundImage: `url(${background})` }}>
-          <div className='backdrop_opacity' id="back">
+          <div className='backdrop_opacity' id="back" style={{ maxHeight: window.innerHeight, minHeight: window.innerHeight }}>
             <div className='content'>
               <NavBarMain top={top} />
               <Switch>
