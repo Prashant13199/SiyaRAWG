@@ -70,6 +70,14 @@
   height: auto;
   width: 160px;
   cursor: pointer;
+  transition: all .8s;
+}
+
+.logo_onscroll {
+  width: 100px;
+  height: auto;
+  cursor: pointer;
+  transition: all .8s;
 }
 
 ::-webkit-scrollbar {
@@ -421,7 +429,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  height: 100px;
+  height: 50vh;
   align-items: center;
 }
 

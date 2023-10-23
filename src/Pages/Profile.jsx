@@ -10,6 +10,7 @@ import empty from '../Assets/empty.png'
 import { useTheme } from '@mui/material';
 import CachedIcon from '@mui/icons-material/Cached';
 import SingleGameTile from '../Components/SingleGameTile';
+import { CircularProgress } from '@mui/material';
 
 export default function Profile({ setBackground }) {
 
@@ -28,6 +29,7 @@ export default function Profile({ setBackground }) {
   const theme = useTheme()
   const [suggestions, setSuggestions] = useState([])
   const [pictures, setPictures] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetchRecommendation();
@@ -57,6 +59,7 @@ export default function Profile({ setBackground }) {
     database.ref(`/Users/${auth?.currentUser?.uid}`).on('value', snapshot => {
       setCurrentPhoto(snapshot.val()?.photo)
       setCurrentUsername(snapshot.val()?.username)
+      setLoading(false)
     })
     database.ref(`/Users/${auth?.currentUser?.uid}/library`).on('value', snapshot => {
       let arr = []
@@ -108,7 +111,7 @@ export default function Profile({ setBackground }) {
     }).then(() => handleClose()).catch((e) => console.log(e))
   }
 
-  return (
+  return !loading ? (
     <>
       <Modal show={show} onHide={handleClose} centered size='lg'>
         <Modal.Body cslassName='modal_body' style={{ backgroundColor: theme.palette.background.default, color: theme.palette.text.primary }}>
@@ -186,4 +189,5 @@ export default function Profile({ setBackground }) {
 
     </>
   )
+    : <div className='loading'><CircularProgress color="success" /></div>
 }

@@ -4,19 +4,26 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import empty from '../Assets/empty.png'
 import SingleGameTile from '../Components/SingleGameTile';
+import { CircularProgress } from '@mui/material'
 
 export default function Search({ setBackground }) {
 
     const [content, setContent] = useState([]);
     const [query, setQuery] = useState("")
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         setBackground('')
     }, [])
 
     const fetchSearch = () => {
+        setLoading(true)
         fetch(`https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_KEY}&search=${query}`)
-            .then(res => res.json()).then((data) => setContent(data.results)).catch((e) => console.log(e))
+            .then(res => res.json())
+            .then((data) => {
+                setContent(data.results)
+                setLoading(false)
+            }).catch((e) => console.log(e))
     }
 
     useEffect(() => {
@@ -43,11 +50,11 @@ export default function Search({ setBackground }) {
                 />
             </Paper>
             <br />
-            <div className='trending_scroll_responsive'>
-                {content && content.map((data) => {
+            {!loading ? <div className='trending_scroll_responsive'>
+                {content?.map((data) => {
                     return <SingleGameTile data={data} key={data.id} />
                 })}
-            </div>
+            </div> : <div className='loading'><CircularProgress color='success' /></div>}
             {content?.length === 0 && query && <center>
                 <img src={empty} width={'100px'} height={'auto'} />
                 <h6>Oops... no games found</h6></center>}

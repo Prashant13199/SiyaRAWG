@@ -4,6 +4,7 @@ import '../index.css';
 import { useParams } from 'react-router-dom';
 import empty from '../Assets/empty.png'
 import SingleGameTile from '../Components/SingleGameTile';
+import { CircularProgress } from '@mui/material';
 
 export default function UserProfile({ setBackground }) {
 
@@ -15,6 +16,7 @@ export default function UserProfile({ setBackground }) {
     const [favourite, setFavourite] = useState([])
     const [playing, setPlaying] = useState([])
     const [suggestions, setSuggestions] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         setBackground(favourite[Math.floor(Math.random() * favourite.length)]?.game?.background_image)
@@ -24,6 +26,7 @@ export default function UserProfile({ setBackground }) {
         database.ref(`/Users/${uid}`).on('value', snapshot => {
             setPhoto(snapshot.val()?.photo)
             setUsername(snapshot.val()?.username)
+            setLoading(false)
         })
     }, [])
 
@@ -78,7 +81,7 @@ export default function UserProfile({ setBackground }) {
         })
     }, [])
 
-    return (
+    return !loading ? (
         <div className='Profile'>
             <div className='profile_header'>
                 <div style={{ position: 'relative', width: 'fit-content' }}>
@@ -130,4 +133,5 @@ export default function UserProfile({ setBackground }) {
                 <h6>Nothing to show</h6></center>}
         </div>
     )
+        : <div className='loading'><CircularProgress color="success" /></div>
 }

@@ -46,7 +46,7 @@ export default function NavBarMain({ top }) {
       <Navbar className={top < 50 ? 'navbar navbar_back_image' : 'navbar navbar_back'} variant={theme.palette.mode} fixed='top'>
         <Navbar.Brand>
           <NavLink to="/">
-            <img src={logo} className='logo' alt="logo" />
+            <img src={logo} className={top < 50 ? 'logo' : 'logo_onscroll'} alt="logo" />
           </NavLink>
         </Navbar.Brand>
         <Nav className="me-auto"></Nav>
