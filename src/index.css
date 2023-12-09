@@ -25,12 +25,12 @@
 
 .navbar_back_image {
   background-image: linear-gradient(rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0));
-  transition: all .6s;
+  transition: all .3s;
 }
 
 .navbar_back {
   background-color: rgb(18, 18, 18);
-  transition: all .6s;
+  transition: all .3s;
 }
 
 .content {
@@ -56,7 +56,7 @@
 .home_grid {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -142,16 +142,17 @@
 .single_game_tile {
   background-color: rgb(43, 43, 43);
   border-radius: 10px;
-  margin: 5px;
+  margin: 10px;
   cursor: pointer;
-  transition: all .5s;
+  transition: all .3s;
   width: fit-content;
   height: fit-content;
+  min-height: 350px;
 }
 
 .single_game_tile:hover {
-  transform: scale(98%);
-  transition: all .5s;
+  transform: scale(103%);
+  transition: all .3s;
 }
 
 .single_game_tile_title {
@@ -205,15 +206,14 @@
 }
 
 .screenshot {
-  width: 100%;
-  height: auto;
-  margin-top: 10px;
-  border-radius: 10px;
+  width: 97%;
+  margin: auto;
+  margin-top: 20px;
 }
 
 .screenshots {
-  width: 80%;
-  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .released {
@@ -539,8 +539,8 @@
   }
 
   .screenshots {
-    width: 90%;
-    margin: auto;
+    width: 100%;
+    grid-template-columns: 1fr;
   }
 
   .input_search {
